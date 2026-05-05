@@ -19,7 +19,6 @@ const computedMean = document.getElementById('computedMean');
 const computedMedian = document.getElementById('computedMedian');
 const computedStdDev = document.getElementById('computedStdDev');
 const computedSkewness = document.getElementById('computedSkewness');
-const insightTextPage2 = document.getElementById('insightTextPage2');
 
 let distributionData = [];
 let page2Initialized = false;
@@ -390,25 +389,8 @@ function updateDistributionStatistics() {
     computedMedian.textContent = median.toFixed(2);
     computedStdDev.textContent = stdDev.toFixed(2);
     computedSkewness.textContent = skewness.toFixed(2);
-
-    // Update insight
-    updatePage2Insight(mean, median, stdDev, skewness);
 }
 
-function updatePage2Insight(mean, median, stdDev, skewness) {
-    let insight = '';
-    const difference = Math.abs(mean - median);
-
-    if (difference < 1) {
-        insight = `✓ The mean (${mean.toFixed(2)}) and median (${median.toFixed(2)}) are nearly equal. This indicates a symmetric distribution.`;
-    } else if (mean > median) {
-        insight = `⚠️ The mean (${mean.toFixed(2)}) is greater than the median (${median.toFixed(2)}) by ${difference.toFixed(2)}. This suggests a right-skewed (positive-skewed) distribution with a tail of larger values pulling the mean up.`;
-    } else {
-        insight = `⚠️ The mean (${mean.toFixed(2)}) is less than the median (${median.toFixed(2)}) by ${difference.toFixed(2)}. This suggests a left-skewed (negative-skewed) distribution with a tail of smaller values pulling the mean down.`;
-    }
-
-    insightTextPage2.textContent = insight;
-}
 
 // Event listeners for Page 2
 if (meanSlider) {

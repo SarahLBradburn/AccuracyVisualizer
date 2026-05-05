@@ -33,8 +33,6 @@ const matrixFN = document.getElementById('matrixFN');
 const matrixFP = document.getElementById('matrixFP');
 const matrixTN = document.getElementById('matrixTN');
 
-const insightText = document.getElementById('insightText');
-
 // State
 let population = [];
 
@@ -265,40 +263,7 @@ function updateStatistics() {
     matrixFP.textContent = fp.toLocaleString();
     matrixTN.textContent = tn.toLocaleString();
 
-    // Update insight text
-    updateInsight(stats, accuracy);
-}
 
-// Generate insight text
-function updateInsight(stats, accuracy) {
-    const { tp, fp, tn, fn } = stats;
-    const prevalence = parseInt(prevalenceSlider.value);
-    const totalPositives = tp + fn;
-    const totalNegatives = tn + fp;
-
-    let insight = '';
-
-    if (totalPositives === 0) {
-        insight = '📊 No positive cases in this population (condition is absent).';
-    } else if (totalNegatives === 0) {
-        insight = '📊 Entire population has the condition (condition is universal).';
-    } else if (fp === 0 && fn === 0) {
-        insight = '✓ Perfect predictions! All tests are correct.';
-    } else if (fp > tp && prevalence < 20) {
-        insight = `⚠️ More false positives than true positives! With ${accuracy.toFixed(1)}% accuracy on a ${prevalence}% prevalent condition, your positive test results are mostly wrong. Precision is only ${((tp / (tp + fp)) * 100).toFixed(1)}%.`;
-    } else if (fp > tp * 2) {
-        insight = `⚠️ Significantly more false positives. Even with high accuracy, when a condition is rare, false positives dominate positive predictions.`;
-    } else if (fn > tp && prevalence > 50) {
-        insight = `⚠️ The model misses many true cases (high false negatives). Lower false negative bias to catch more true positives.`;
-    } else if (accuracy >= 95) {
-        insight = `✓ High overall accuracy (${accuracy.toFixed(1)}%) but remember: this measures correct predictions for both conditions. Look at Precision for positive predictions specifically.`;
-    } else if (accuracy <= 50) {
-        insight = `❌ Below 50% accuracy - this model performs worse than random guessing!`;
-    } else {
-        insight = `📊 Average accuracy at ${accuracy.toFixed(1)}%. For a ${prevalence}% prevalent condition, Precision is ${((tp / (tp + fp)) * 100).toFixed(1)}% - this is the reliability of positive predictions.`;
-    }
-
-    insightText.textContent = insight;
 }
 
 // Update slider values on input
